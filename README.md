@@ -1,0 +1,4 @@
+strutil
+=======
+
+c++ string utiltes
