@@ -75,25 +75,25 @@ std::string trim(const std::string& s)
  */
 std::string join(const std::string& delim, const std::string* s, int size)
 {
-	int retLen = 0;
-	for(int i = 0; i < size; ++i)
-	{
-		retLen += s[i].size();
-	}
-	retLen += delim.size() * (size-1);
+    int retLen = 0;
+    for(int i = 0; i < size; ++i)
+    {
+        retLen += s[i].size();
+    }
+    retLen += delim.size() * (size-1);
 
-	std::string ret;
-	ret.reserve(retLen);
+    std::string ret;
+    ret.reserve(retLen);
 
-	for(int i = 0; i < size; ++i)
-	{
-		ret += s[i];
-		if( i < size-1 )
-		{
-			ret += delim;
-		}
-	}
-	return ret;
+    for(int i = 0; i < size; ++i)
+    {
+        ret += s[i];
+        if( i < size-1 )
+        {
+            ret += delim;
+        }
+    }
+    return ret;
 }
 
 /**
@@ -106,7 +106,7 @@ std::string join(const std::string& delim, const std::string* s, int size)
  */
 std::string join(const std::string& delim, const std::vector<std::string>& s)
 {
-	return join(delim, &s[0], s.size());
+    return join(delim, &s[0], s.size());
 }
 
 /**
@@ -116,7 +116,7 @@ std::string join(const std::string& delim, const std::vector<std::string>& s)
  */
 bool contained(const std::string& s0, const std::string& s1)
 {
-	return std::string::npos != s1.find(s0, 0);
+    return std::string::npos != s1.find(s0, 0);
 }
 
 /**
@@ -168,91 +168,91 @@ std::vector<std::string> split(const std::string& s, const std::string& delim)
 
 static void split_ibs0(parsecontext& pc, const std::string& s, const std::string& delim, char quote, std::vector<std::string>& ret)
 {
-	if(pc.i == s.size())
-	{
-		throw "Parse error";
-	}
-	else if(s[pc.i] == quote || s[pc.i] == '\\' || contained(s[pc.i], delim))
-	{
-		pc.tmp += s[pc.i];
-		pc.i++;
-		split_st(pc, s, delim, quote, ret);
-	}else
-	{
-		throw "Parse error";
-	}
+    if(pc.i == s.size())
+    {
+        throw "Parse error";
+    }
+    else if(s[pc.i] == quote || s[pc.i] == '\\' || contained(s[pc.i], delim))
+    {
+        pc.tmp += s[pc.i];
+        pc.i++;
+        split_st(pc, s, delim, quote, ret);
+    }else
+    {
+        throw "Parse error";
+    }
 }
 
 static  void split_ibs1(parsecontext& pc, const std::string& s, const std::string& delim, char quote, std::vector<std::string>& ret)
 {
-	if(pc.i == s.size())
-	{
-		throw "Parse error";
-	}
-	else if(s[pc.i] == quote || s[pc.i] == '\\' || contained(s[pc.i], delim))
-	{
-		pc.tmp += s[pc.i];
-		pc.i++;
-		split_inq(pc, s, delim, quote, ret);
-	}else
-	{
-		throw "Parse error";
-	}
+    if(pc.i == s.size())
+    {
+        throw "Parse error";
+    }
+    else if(s[pc.i] == quote || s[pc.i] == '\\' || contained(s[pc.i], delim))
+    {
+        pc.tmp += s[pc.i];
+        pc.i++;
+        split_inq(pc, s, delim, quote, ret);
+    }else
+    {
+        throw "Parse error";
+    }
 }
 
 
 static void split_inq(parsecontext& pc, const std::string& s, const std::string& delim, char quote, std::vector<std::string>& ret)
 {
-	if(pc.i == s.size())
-	{
-		throw "Parse error";
-	}else if(s[pc.i] == '\\')
-	{
-		pc.i++;
-		split_ibs1(pc, s, delim, quote, ret);
-	}else if(s[pc.i] == quote)
-	{
-		pc.i++;
-		split_st(pc, s, delim, quote, ret);
-	}else
-	{
-		pc.tmp += s[pc.i];
-		pc.i++;
-		split_inq(pc, s, delim, quote, ret);
-	}
+    if(pc.i == s.size())
+    {
+        throw "Parse error";
+    }else if(s[pc.i] == '\\')
+    {
+        pc.i++;
+        split_ibs1(pc, s, delim, quote, ret);
+    }else if(s[pc.i] == quote)
+    {
+        pc.i++;
+        split_st(pc, s, delim, quote, ret);
+    }else
+    {
+        pc.tmp += s[pc.i];
+        pc.i++;
+        split_inq(pc, s, delim, quote, ret);
+    }
 }
 
 static void split_st(parsecontext& pc, const std::string& s, const std::string& delim, char quote, std::vector<std::string>& ret)
 {
     if( pc.i == s.size() || contained(s[pc.i], delim) )
     {
-		if(pc.tmp.length() != 0)
-		{
-			ret.push_back(pc.tmp);
-		}
-		pc.tmp = "";
-		if(pc.i == s.size())
-		{
-			// Parse end
-			return;
-		}else
-		{
-			pc.i++;
-			split_st(pc, s, delim, quote, ret);
-		}
+        if(pc.tmp.length() != 0)
+        {
+            ret.push_back(pc.tmp);
+        }
+        pc.tmp = "";
+        if(pc.i == s.size())
+        {
+            // Parse end
+            return;
+        }else
+        {
+            pc.i++;
+            split_st(pc, s, delim, quote, ret);
+        }
     }else if(s[pc.i] == '\\')
     {
-    	pc.i++;
-    	split_ibs0(pc, s, delim, quote, ret);
+        pc.i++;
+        split_ibs0(pc, s, delim, quote, ret);
     }else if(s[pc.i] == quote)
     {
-    	pc.i++;
-    	split_inq(pc, s, delim, quote, ret);
+        pc.i++;
+        split_inq(pc, s, delim, quote, ret);
     }else
     {
-    	pc.tmp += s[pc.i];
-    	pc.i++;
-    	split_st(pc, s, delim, quote, ret);
+        pc.tmp += s[pc.i];
+        pc.i++;
+        split_st(pc, s, delim, quote, ret);
     }
 }
 
@@ -268,11 +268,11 @@ static void split_st(parsecontext& pc, const std::string& s, const std::string& 
  */
 std::vector<std::string> split(const std::string& s, const std::string& delim, char quote)
 {
-	std::vector<std::string> ret;
-	parsecontext pc;
-	pc.i = 0;
-	split_st(pc, s, delim, quote, ret);
-	return ret;
+    std::vector<std::string> ret;
+    parsecontext pc;
+    pc.i = 0;
+    split_st(pc, s, delim, quote, ret);
+    return ret;
 }
 
 /**
@@ -335,9 +335,9 @@ int toInt(const std::string& s, bool& success)
  */
 std::string format(const std::string& f, double v)
 {
-	char buf[128];
-	snprintf(buf, sizeof(buf), f.c_str(), v);
-	return std::string(buf);
+    char buf[128];
+    snprintf(buf, sizeof(buf), f.c_str(), v);
+    return std::string(buf);
 }
 
 /**
@@ -350,9 +350,9 @@ std::string format(const std::string& f, double v)
  */
 std::string format(const std::string& f, int v)
 {
-	char buf[128];
-	snprintf(buf, sizeof(buf), f.c_str(), v);
-	return std::string(buf);
+    char buf[128];
+    snprintf(buf, sizeof(buf), f.c_str(), v);
+    return std::string(buf);
 }
 
 /**
@@ -364,7 +364,7 @@ std::string format(const std::string& f, int v)
  */
 std::string toString(double v)
 {
-	return format("%f", v);
+    return format("%f", v);
 }
 
 /**
@@ -376,7 +376,7 @@ std::string toString(double v)
  */
 std::string toString(int v)
 {
-	return format("%d", v);
+    return format("%d", v);
 }
 
 
@@ -387,13 +387,13 @@ std::string toString(int v)
 #include <iostream>
 int main(int argc, char** argv)
 {
-	char in[1024];
-	std::cin.getline(in, sizeof(in));
-	std::vector<std::string> ret = strutil::split(in, ",", '\"');
-	std::cout << "input:[" << in << "]" << std::endl;
-	for(int i = 0; i < ret.size(); ++i)
-	{
-		std::cout << i << " : " << ret[i] << std::endl;
-	}
+    char in[1024];
+    std::cin.getline(in, sizeof(in));
+    std::vector<std::string> ret = strutil::split(in, ",", '\"');
+    std::cout << "input:[" << in << "]" << std::endl;
+    for(int i = 0; i < ret.size(); ++i)
+    {
+        std::cout << i << " : " << ret[i] << std::endl;
+    }
 }
 #endif
