@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (C) 2012-2013 Hiroyuki Baba, All Rights Reserved.
+ * Copyright (C) 2012-2015 Hiroyuki Baba, All Rights Reserved.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
